@@ -1,6 +1,7 @@
 package com.mertselimb.databaseApiExample.Services.Impl;
 
 import com.mertselimb.databaseApiExample.Entities.Employee;
+import com.mertselimb.databaseApiExample.Exceptions.EmployeeNotFoundException;
 import com.mertselimb.databaseApiExample.Repositories.EmployeeRepository;
 import com.mertselimb.databaseApiExample.Services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).get();
+    public Employee getEmployeeById(Long id) throws EmployeeNotFoundException {
+        if (employeeRepository.findById(id).isPresent()) {
+            return employeeRepository.findById(id).get();
+        }else{
+            throw new EmployeeNotFoundException();
+        }
+
     }
 
     @Override
@@ -36,12 +42,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Long id, Employee employee) {
-        Employee employeeFromDb = employeeRepository.findById(id).get();
-        employeeFromDb.setId(employee.getId());
-        employeeFromDb.setName(employee.getName());
-        employeeFromDb.setRole(employee.getRole());
-        employeeRepository.save(employeeFromDb);
+    public void updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException {
+        if (employeeRepository.findById(id).isPresent()) {
+            Employee employeeFromDb = employeeRepository.findById(id).get();
+            employeeFromDb.setId(employee.getId());
+            employeeFromDb.setName(employee.getName());
+            employeeFromDb.setRole(employee.getRole());
+            employeeRepository.save(employeeFromDb);
+        } else {
+            throw new EmployeeNotFoundException();
+        }
     }
 
     @Override
