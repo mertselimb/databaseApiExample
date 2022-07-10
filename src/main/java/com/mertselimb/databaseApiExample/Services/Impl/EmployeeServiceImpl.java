@@ -38,7 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateEmployee(Long id, Employee employee) {
         Employee employeeFromDb = employeeRepository.findById(id).get();
-        System.out.println(employeeFromDb);
         employeeFromDb.setId(employee.getId());
         employeeFromDb.setName(employee.getName());
         employeeFromDb.setRole(employee.getRole());
