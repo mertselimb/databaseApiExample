@@ -2,6 +2,7 @@ package com.mertselimb.databaseApiExample.Controllers;
 
 import com.mertselimb.databaseApiExample.Entities.Employee;
 import com.mertselimb.databaseApiExample.Enums.Role;
+import com.mertselimb.databaseApiExample.Exceptions.EmployeeNotFoundException;
 import com.mertselimb.databaseApiExample.Repositories.EmployeeRepository;
 import com.mertselimb.databaseApiExample.Services.EmployeeService;
 import com.mertselimb.databaseApiExample.Services.Impl.EmployeeServiceImpl;
@@ -31,7 +32,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    public void testGet() {
+    public void testGet() throws EmployeeNotFoundException {
         Mockito.when(mockEmployeeRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(employee));
         Employee response = employeeService.getEmployeeById(1L);
         assertEquals(response, employee);
@@ -60,7 +61,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws EmployeeNotFoundException {
         Mockito.when(mockEmployeeRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(employee));
 
         Employee updatedEmployee = new Employee();
